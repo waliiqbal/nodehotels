@@ -2,10 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser'); // Body-parser package
 const cors = require('cors');
 const db = require('./db'); // Ensure this connects to your MongoDB
+require('dotenv').config();
+
 
 
 const app = express();
-const port = 3009;
+const port = process.env.PORT || 3009;
 
 // Middleware setup
 app.use(cors());

@@ -1,25 +1,18 @@
-// Load the MongoDB package
+// db.js
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-// Define the MongoDB URI and Database name
-const uri =  'mongodb+srv://waliiqbal2020:QwXfF6vnGHPDih1W@cluster0.gqktgu9.mongodb.net/test?retryWrites=true&w=majority';
+const uri = process.env.MONGO_URL;
 
-const dbName = 'test';
+console.log("MongoDB URI:", uri); // Debugging line
 
-// Create a database connection
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+if (!uri) {
+  throw new Error('MONGO_URL environment variable not set');
+}
 
-const db = mongoose.connection;
-// define event listener for database collection
-db.on ("connected" , ()=> {
-    console.log("connected to mongodb server");
-})
-db.on ("error" , (err)=> {
-    console.log("mongodb connection error" , err);
-})
-db.on ("disconnected" , ()=> {
-    console.log("mongodb disconned");
-})
-// export database connection
-module.exports = db;
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Database connected successfully'))
+  .catch((err) => console.error('Database connection error:', err));
+
+module.exports = mongoose;
 
